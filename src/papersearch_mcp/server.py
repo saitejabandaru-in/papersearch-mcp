@@ -6,14 +6,14 @@ and extract text content from paper PDFs.
 
 from __future__ import annotations
 
-import json
-from typing import Optional
-
 from mcp.server.fastmcp import FastMCP
 
 from papersearch_mcp.arxiv_client import get_paper_by_id, search_arxiv
 from papersearch_mcp.pdf_extractor import extract_text_from_url
-from papersearch_mcp.semantic_scholar import get_citations, get_paper_details, search_semantic_scholar
+from papersearch_mcp.semantic_scholar import (
+    get_citations,
+    search_semantic_scholar,
+)
 
 # Create FastMCP server
 mcp = FastMCP(
@@ -26,7 +26,7 @@ mcp = FastMCP(
 async def search_arxiv_papers(
     query: str,
     max_results: int = 10,
-    category: Optional[str] = None,
+    category: str | None = None,
     sort_by: str = "relevance",
     sort_order: str = "descending",
 ) -> str:
@@ -58,7 +58,8 @@ async def search_arxiv_papers(
                 f"- **arXiv ID**: `{paper.arxiv_id}`\n"
                 f"- **Authors**: {', '.join(paper.authors)}\n"
                 f"- **Published**: {paper.published[:10]} | **Updated**: {paper.updated[:10]}\n"
-                f"- **Categories**: {', '.join(paper.categories)} (Primary: `{paper.primary_category}`)\n"
+                f"- **Categories**: {', '.join(paper.categories)} "
+                f"(Primary: `{paper.primary_category}`)\n"
                 f"- **PDF Link**: {paper.pdf_url}\n"
                 f"- **Abstract**: {paper.abstract}\n"
             )
@@ -93,7 +94,8 @@ async def get_arxiv_paper_details(arxiv_id: str) -> str:
             f"- **arXiv ID**: `{paper.arxiv_id}`\n"
             f"- **Authors**: {', '.join(paper.authors)}\n"
             f"- **Published**: {paper.published} | **Updated**: {paper.updated}\n"
-            f"- **Categories**: {', '.join(paper.categories)} (Primary: `{paper.primary_category}`)\n"
+            f"- **Categories**: {', '.join(paper.categories)} "
+            f"(Primary: `{paper.primary_category}`)\n"
             f"- **PDF URL**: {paper.pdf_url}\n"
             f"- **Abstract URL**: {paper.abs_url}\n"
         )
@@ -115,8 +117,8 @@ async def get_arxiv_paper_details(arxiv_id: str) -> str:
 async def search_semantic_scholar_papers(
     query: str,
     max_results: int = 10,
-    year: Optional[str] = None,
-    fields_of_study: Optional[str] = None,
+    year: str | None = None,
+    fields_of_study: str | None = None,
     open_access_only: bool = False,
 ) -> str:
     """Search Semantic Scholar for papers across various disciplines.
@@ -148,7 +150,8 @@ async def search_semantic_scholar_papers(
                 f"- **Paper ID**: `{paper.paper_id}`\n"
                 f"- **Authors**: {', '.join([a.name for a in paper.authors])}\n"
                 f"- **Year**: {paper.year or 'N/A'} | **Venue**: {paper.venue or 'N/A'}\n"
-                f"- **Citations**: {paper.citation_count} | **References**: {paper.reference_count}\n"
+                f"- **Citations**: {paper.citation_count} | "
+                f"**References**: {paper.reference_count}\n"
                 f"- **Fields**: {', '.join(paper.fields_of_study)}\n"
             )
             if paper.open_access_pdf_url:
@@ -178,7 +181,8 @@ async def get_citation_graph(
 
     Args:
         paper_id: S2 Paper ID, arXiv ID (prefixed with 'ARXIV:'), or DOI (prefixed with 'DOI:').
-        direction: Either 'citations' (who cites this paper) or 'references' (what does this paper cite).
+        direction: Either 'citations' (who cites this paper) or
+            'references' (what does this paper cite).
         max_results: Maximum number of papers to return (default 20, max 100).
     """
     if direction not in ("citations", "references"):
@@ -218,7 +222,7 @@ async def get_citation_graph(
 @mcp.tool()
 async def extract_pdf_content(
     url: str,
-    max_pages: Optional[int] = None,
+    max_pages: int | None = None,
 ) -> str:
     """Download a PDF paper from a URL and extract its text content.
 

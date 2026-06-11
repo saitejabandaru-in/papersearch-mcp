@@ -8,7 +8,6 @@ from __future__ import annotations
 
 import asyncio
 from dataclasses import dataclass
-from typing import Optional
 
 import httpx
 
@@ -59,7 +58,7 @@ RATE_LIMIT_SECONDS = 3.0
 class S2Author:
     """Represents an author from Semantic Scholar."""
 
-    author_id: Optional[str]
+    author_id: str | None
     name: str
 
     def to_dict(self) -> dict:
@@ -72,20 +71,20 @@ class S2Paper:
 
     paper_id: str
     title: str
-    abstract: Optional[str]
+    abstract: str | None
     authors: list[S2Author]
-    year: Optional[int]
-    venue: Optional[str]
+    year: int | None
+    venue: str | None
     citation_count: int
     reference_count: int
     influential_citation_count: int
     is_open_access: bool
-    open_access_pdf_url: Optional[str]
+    open_access_pdf_url: str | None
     fields_of_study: list[str]
     external_ids: dict[str, str]
-    publication_date: Optional[str]
-    url: Optional[str]
-    journal: Optional[dict]
+    publication_date: str | None
+    url: str | None
+    journal: dict | None
 
     def to_dict(self) -> dict:
         """Convert to a dictionary for JSON serialization."""
@@ -153,11 +152,11 @@ def _parse_paper(data: dict) -> S2Paper:
 async def search_semantic_scholar(
     query: str,
     max_results: int = 10,
-    year: Optional[str] = None,
-    fields_of_study: Optional[list[str]] = None,
+    year: str | None = None,
+    fields_of_study: list[str] | None = None,
     open_access_only: bool = False,
-    min_citation_count: Optional[int] = None,
-    api_key: Optional[str] = None,
+    min_citation_count: int | None = None,
+    api_key: str | None = None,
 ) -> list[S2Paper]:
     """Search Semantic Scholar for papers.
 
@@ -225,8 +224,8 @@ async def search_semantic_scholar(
 
 async def get_paper_details(
     paper_id: str,
-    api_key: Optional[str] = None,
-) -> Optional[S2Paper]:
+    api_key: str | None = None,
+) -> S2Paper | None:
     """Get detailed information about a specific paper.
 
     Args:
@@ -268,7 +267,7 @@ async def get_citations(
     paper_id: str,
     max_results: int = 20,
     direction: str = "citations",
-    api_key: Optional[str] = None,
+    api_key: str | None = None,
 ) -> list[S2Paper]:
     """Get papers that cite or are cited by the given paper.
 

@@ -7,10 +7,6 @@ for large documents.
 
 from __future__ import annotations
 
-import io
-import tempfile
-from typing import Optional
-
 import fitz  # PyMuPDF
 import httpx
 
@@ -65,7 +61,7 @@ async def download_pdf(url: str, timeout: float = DOWNLOAD_TIMEOUT) -> bytes:
 
 def extract_text_from_bytes(
     pdf_bytes: bytes,
-    max_pages: Optional[int] = None,
+    max_pages: int | None = None,
     max_length: int = MAX_TEXT_LENGTH,
 ) -> dict:
     """Extract text content from PDF bytes.
@@ -102,7 +98,9 @@ def extract_text_from_bytes(
                 page_text = page.get_text("blocks")
                 if isinstance(page_text, list):
                     page_text = "\n".join(
-                        block[4] for block in page_text if len(block) > 4 and isinstance(block[4], str)
+                        block[4]
+                        for block in page_text
+                        if len(block) > 4 and isinstance(block[4], str)
                     )
 
             if page_text and page_text.strip():
@@ -138,7 +136,7 @@ def extract_text_from_bytes(
 
 async def extract_text_from_url(
     url: str,
-    max_pages: Optional[int] = None,
+    max_pages: int | None = None,
     max_length: int = MAX_TEXT_LENGTH,
 ) -> dict:
     """Download a PDF and extract its text content.

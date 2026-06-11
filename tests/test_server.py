@@ -1,6 +1,6 @@
 import asyncio
-from papersearch_mcp.server import mcp
 
+from papersearch_mcp.server import mcp
 
 
 def test_tool_registration():
