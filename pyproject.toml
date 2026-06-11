@@ -37,10 +37,10 @@ dependencies = [
 papersearch-mcp = "papersearch_mcp.server:main"
 
 [project.urls]
-Homepage = "https://github.com/saitejabandaru/papersearch-mcp"
-Repository = "https://github.com/saitejabandaru/papersearch-mcp"
-Issues = "https://github.com/saitejabandaru/papersearch-mcp/issues"
-Documentation = "https://github.com/saitejabandaru/papersearch-mcp#readme"
+Homepage = "https://github.com/saitejabandaru-in/papersearch-mcp"
+Repository = "https://github.com/saitejabandaru-in/papersearch-mcp"
+Issues = "https://github.com/saitejabandaru-in/papersearch-mcp/issues"
+Documentation = "https://github.com/saitejabandaru-in/papersearch-mcp#readme"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/papersearch_mcp"]

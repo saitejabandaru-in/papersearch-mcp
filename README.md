@@ -39,7 +39,7 @@ pip install papersearch-mcp
 
 ### Install from Source (Development)
 ```bash
-git clone https://github.com/saitejabandaru/papersearch-mcp.git
+git clone https://github.com/saitejabandaru-in/papersearch-mcp.git
 cd papersearch-mcp
 pip install -e .
 ```
