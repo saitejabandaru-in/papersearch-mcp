@@ -8,9 +8,7 @@ abstracts, categories, and PDF links.
 from __future__ import annotations
 
 import xml.etree.ElementTree as ET
-from dataclasses import dataclass, field
-from datetime import datetime
-from typing import Optional
+from dataclasses import dataclass
 
 import httpx
 
@@ -39,9 +37,9 @@ class ArxivPaper:
     updated: str
     pdf_url: str
     abs_url: str
-    comment: Optional[str] = None
-    journal_ref: Optional[str] = None
-    doi: Optional[str] = None
+    comment: str | None = None
+    journal_ref: str | None = None
+    doi: str | None = None
 
     def to_dict(self) -> dict:
         """Convert to a dictionary for JSON serialization."""
@@ -160,9 +158,9 @@ async def search_arxiv(
     start: int = 0,
     sort_by: str = "relevance",
     sort_order: str = "descending",
-    category: Optional[str] = None,
-    date_from: Optional[str] = None,
-    date_to: Optional[str] = None,
+    category: str | None = None,
+    date_from: str | None = None,
+    date_to: str | None = None,
 ) -> list[ArxivPaper]:
     """Search arXiv for papers matching the query.
 
@@ -246,7 +244,7 @@ async def search_arxiv(
     return papers
 
 
-async def get_paper_by_id(arxiv_id: str) -> Optional[ArxivPaper]:
+async def get_paper_by_id(arxiv_id: str) -> ArxivPaper | None:
     """Retrieve a specific paper by its arXiv ID.
 
     Args:
